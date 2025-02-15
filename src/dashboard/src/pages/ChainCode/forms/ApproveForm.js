@@ -24,7 +24,7 @@ const ApproveForm = props => {
       const response = await listChannel();
       const newChannels = Object.keys(response.data.data).map(item => ({
         label: response.data.data[item].name,
-        value: response.data.data[item].name
+        value: response.data.data[item].name,
       }));
       setChannels(newChannels);
     }
