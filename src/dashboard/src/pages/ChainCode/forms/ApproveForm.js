@@ -9,7 +9,7 @@ const FormItem = Form.Item;
 const ApproveForm = props => {
   const [form] = Form.useForm();
   const intl = useIntl();
-  const [channels, setChannels] = useState();
+  const [channels, setChannels] = useState([]);
   const {
     approveModalVisible,
     handleApprove,
@@ -20,11 +20,15 @@ const ApproveForm = props => {
   } = props;
 
   useEffect(() => {
-    async function fecthData() {
+    async function fetchData() {
       const response = await listChannel();
-      setChannels(response.data.data);
+      const newChannels = Object.keys(response.data.data).map(item => ({
+        label: response.data.data[item].name,
+        value: response.data.data[item].name,
+      }));
+      setChannels(newChannels);
     }
-    fecthData();
+    fetchData();
   }, []);
 
   const approveCallback = response => {
@@ -107,7 +111,7 @@ const ApproveForm = props => {
             id: 'app.chainCode.form.approve.channel',
             defaultMessage: 'Please select channel',
           })}
-          name="channel"
+          name="channels"
           rules={[
             {
               required: true,
@@ -120,9 +124,8 @@ const ApproveForm = props => {
         >
           <Select
             mode="multiple"
-            options={channels} // dummyChannels changed
+            options={channels}
             tagRender={tagRender}
-            defaultValue={[]}
             dropdownClassName={styles.dropdownClassName}
           />
         </FormItem>
