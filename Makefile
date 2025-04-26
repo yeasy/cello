@@ -9,13 +9,14 @@
 #   - all (default):  Builds all targets and runs all tests/checks
 #   - clean:          Cleans the docker containers.
 #   - check:          Setup as master node, and runs all tests/checks, will be triggered by CI
+#	- check-dashboard:Tests/checks the dashboard
 #   - deep-clean: 	  Clean up all docker images and local storage.
 #   - doc:       	  Start a local web service to explore the documentation
 #   - docker[-clean]: Build/clean docker images locally
 #   - docker-compose: Start development docker-compose.
+#   - help:           Output the help instructions for each command
 #   - license:		  Checks source files for Apache license header
 #   - local: 		  Run all services ad-hoc
-#   - help:           Output the help instructions for each command
 #   - reset:          Clean up and remove local storage (only use for development)
 #   - restart:        Stop the cello service and then start
 #   - setup-master:   Setup the host as a master node, install pkg and download docker images
