@@ -141,8 +141,10 @@ check: ##@Code Check code format
 	@$(MAKE) license
 	-find ./docs -type f -name "*.md" -exec egrep -l " +$$" {} \;
 	cd src/api-engine && tox && cd ${ROOT_PATH}
-	
 
+check-dashboard: ##@Code Check dashboard
+	docker compose -f tests/dashboard/docker-compose.yml up --abort-on-container-exit || (echo "check dashboard failed $$?"; exit 1)
+	
 deep-clean: ##@Clean Stop services, clean docker images and remove mounted local storage.
 	make clean-images
 	rm -rf $(LOCAL_STORAGE_PATH)
@@ -160,14 +162,14 @@ docker-clean:##@Clean Clean docker images locally
 
 docker-compose: api-engine fabric docker-rest-agent dashboard ##@Development Start development docker-compose
 
+help: ##@Help Show this help.
+	@perl -e '$(HELP_FUN)' $(MAKEFILE_LIST)
+
 license:  ##@Code Check source files for Apache license header
 	scripts/check_license.sh
 
 local:##@Development Run all services ad-hoc
 	make docker-compose start-docker-compose 
-
-help: ##@Help Show this help.
-	@perl -e '$(HELP_FUN)' $(MAKEFILE_LIST)
 
 reset:##@Development Clean up and remove local storage (only use for development)
 	make clean 
@@ -196,14 +198,11 @@ stop: ##@Service Stop service
 clean-images: 
 	@echo "Clean all cello related images, may need to remove all containers"
 	make clean
-	@-docker images --filter=reference='hyperledger/*' --format '{{.ID}}' | xargs -r docker rmi -f 2>/dev/null  
+	@-docker images --filter=reference='hyperledger/*cello*' --format '{{.ID}}' | xargs -r docker rmi -f 2>/dev/null  
 	@echo "Images deleted!"
 	@echo "Pruning dangling images..."
 	docker image prune
 	@echo "Dangling images pruned, cleanup finished!"
-
-check-dashboard:
-	docker compose -f tests/dashboard/docker-compose.yml up --abort-on-container-exit || (echo "check dashboard failed $$?"; exit 1)
 
 start-docker-compose:
 	docker compose -f bootup/docker-compose-files/${COMPOSE_FILE} up -d --force-recreate --remove-orphans
@@ -234,6 +233,7 @@ dashboard:
 	all \
 	license \
 	check \
+	check-dashboard \
 	doc \ 
 	help \
 	docker \
