@@ -13,7 +13,7 @@
 #   - doc:       	  Start a local web service to explore the documentation
 #   - docker[-clean]: Build/clean docker images locally
 #   - docker-compose: Start development docker-compose.
-#   - license:		  Checks sourrce files for Apache license header
+#   - license:		  Checks source files for Apache license header
 #   - local: 		  Run all services ad-hoc
 #   - help:           Output the help instructions for each command
 #   - reset:          Clean up and remove local storage (only use for development)
@@ -128,39 +128,34 @@ HELP_FUN = \
 	}; \
 	print "\n"; }
 
-all: check
+all:
+	make docker
 
 clean: ##@Clean Stop services and clean docker containers.
 	make stop
-	if docker ps -a | grep "cello-"; then \
-		docker ps -a | grep "cello-" | awk '{print $1}' | xargs docker rm -f >/dev/null 2>&1; \
-	fi
+	@-docker ps -a --filter "name=cello-" --format "{{.ID}}" | xargs docker rm -f >/dev/null 2>&1
+	@echo "Cleared out containers"
+	
 
 check: ##@Code Check code format
 	@$(MAKE) license
-	find ./docs -type f -name "*.md" -exec egrep -l " +$$" {} \;
+	-find ./docs -type f -name "*.md" -exec egrep -l " +$$" {} \;
 	cd src/api-engine && tox && cd ${ROOT_PATH}
-	make docker-compose
-	MODE=dev make start
-	sleep 10
-	# make test-api
-	MODE=dev make stop
-	make check-dashboard
+	
 
 deep-clean: ##@Clean Stop services, clean docker images and remove mounted local storage.
-	make stop
-	make clean
-	make clean-docker-images
+	make clean-images
 	rm -rf $(LOCAL_STORAGE_PATH)
 
 doc: ##@Documentation Build local online documentation and start serve
 	command -v mkdocs >/dev/null 2>&1 || pip install -r docs/requirements.txt || pip3 -r docs/requirements.txt
 	mkdocs serve -f mkdocs.yml
 
-docker: images ##@Build Build all required docker images locally
+docker: ##@Build Build all required docker images locally
+	make images
+	docker image prune
 
-docker-clean:##@Clean Clean docker images locally  
-	make stop
+docker-clean:##@Clean Clean docker images locally
 	make clean-images
 
 docker-compose: api-engine fabric docker-rest-agent dashboard ##@Development Start development docker-compose
@@ -191,7 +186,7 @@ start: ##@Service Start service
 	make start-docker-compose
 
 stop: ##@Service Stop service
-	if [ "$(CONFIG_DOCKER_COMPOSE_DEPLOY)" = "y" ]; then \
+	@if [ "$(CONFIG_DOCKER_COMPOSE_DEPLOY)" = "y" ]; then \
 		make stop-docker-compose; \
 	else \
 		make stop-k8s; \
@@ -199,9 +194,13 @@ stop: ##@Service Stop service
 
 ## Help rules
 clean-images: 
+	@echo "Clean all cello related images, may need to remove all containers"
 	make clean
-	echo "Clean all cello related images, may need to remove all containers before"
-	docker images | grep "cello-" | awk '{print $3}' | xargs docker rmi -f
+	@-docker images --filter=reference='hyperledger/*' --format '{{.ID}}' | xargs -r docker rmi -f 2>/dev/null  
+	@echo "Images deleted!"
+	@echo "Pruning dangling images..."
+	docker image prune
+	@echo "Dangling images pruned, cleanup finished!"
 
 check-dashboard:
 	docker compose -f tests/dashboard/docker-compose.yml up --abort-on-container-exit || (echo "check dashboard failed $$?"; exit 1)
