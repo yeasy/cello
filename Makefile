@@ -9,7 +9,6 @@
 #   - all (default):  Builds all targets and runs all tests/checks
 #   - clean:          Cleans the docker containers.
 #   - check:          Setup as master node, and runs all tests/checks, will be triggered by CI
-#	- check-dashboard:Tests/checks the dashboard
 #   - deep-clean: 	  Clean up all docker images and local storage.
 #   - doc:       	  Start a local web service to explore the documentation
 #   - docker[-clean]: Build/clean docker images locally
@@ -129,8 +128,7 @@ HELP_FUN = \
 	}; \
 	print "\n"; }
 
-all:
-	make docker
+all: check
 
 clean: ##@Clean Stop services and clean docker containers.
 	make stop
@@ -142,9 +140,11 @@ check: ##@Code Check code format
 	@$(MAKE) license
 	-find ./docs -type f -name "*.md" -exec egrep -l " +$$" {} \;
 	cd src/api-engine && tox && cd ${ROOT_PATH}
-
-check-dashboard: ##@Code Check dashboard
-	docker compose -f tests/dashboard/docker-compose.yml up --abort-on-container-exit || (echo "check dashboard failed $$?"; exit 1)
+	make docker-compose
+	make start
+	sleep 10
+	make stop
+	make check-dashboard
 	
 deep-clean: ##@Clean Stop services, clean docker images and remove mounted local storage.
 	make clean-images
@@ -156,7 +156,6 @@ doc: ##@Documentation Build local online documentation and start serve
 
 docker: ##@Build Build all required docker images locally
 	make images
-	docker image prune
 
 docker-clean:##@Clean Clean docker images locally
 	make clean-images
@@ -205,6 +204,9 @@ clean-images:
 	docker image prune
 	@echo "Dangling images pruned, cleanup finished!"
 
+check-dashboard:
+	docker compose -f tests/dashboard/docker-compose.yml up --abort-on-container-exit || (echo "check dashboard failed $$?"; exit 1)
+
 start-docker-compose:
 	docker compose -f bootup/docker-compose-files/${COMPOSE_FILE} up -d --force-recreate --remove-orphans
 
@@ -234,7 +236,6 @@ dashboard:
 	all \
 	license \
 	check \
-	check-dashboard \
 	doc \ 
 	help \
 	docker \
