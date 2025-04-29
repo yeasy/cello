@@ -135,7 +135,6 @@ clean: ##@Clean Stop services and clean docker containers.
 	@-docker ps -a --filter "name=cello-" --format "{{.ID}}" | xargs docker rm -f >/dev/null 2>&1
 	@echo "Cleared out containers"
 	
-
 check: ##@Code Check code format
 	@$(MAKE) license
 	-find ./docs -type f -name "*.md" -exec egrep -l " +$$" {} \;
