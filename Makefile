@@ -137,12 +137,12 @@ clean: ##@Clean Stop services and clean docker containers.
 	
 check: ##@Code Check code format
 	@$(MAKE) license
-	-find ./docs -type f -name "*.md" -exec egrep -l " +$$" {} \;
+	find ./docs -type f -name "*.md" -exec egrep -l " +$$" {} \;
 	cd src/api-engine && tox && cd ${ROOT_PATH}
 	make docker-compose
 	MODE=dev make start
 	sleep 10
-	make stop
+	MODE=dev make stop
 	make check-dashboard
 	
 deep-clean: ##@Clean Stop services, clean docker images and remove mounted local storage.
