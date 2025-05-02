@@ -128,7 +128,7 @@ HELP_FUN = \
 	}; \
 	print "\n"; }
 
-all:	check
+all: check
 
 clean: ##@Clean Stop services and clean docker containers.
 	make stop
@@ -140,7 +140,7 @@ check: ##@Code Check code format
 	-find ./docs -type f -name "*.md" -exec egrep -l " +$$" {} \;
 	cd src/api-engine && tox && cd ${ROOT_PATH}
 	make docker-compose
-	make start
+	MODE=dev make start
 	sleep 10
 	make stop
 	make check-dashboard
@@ -153,8 +153,7 @@ doc: ##@Documentation Build local online documentation and start serve
 	command -v mkdocs >/dev/null 2>&1 || pip install -r docs/requirements.txt || pip3 -r docs/requirements.txt
 	mkdocs serve -f mkdocs.yml
 
-docker: ##@Build Build all required docker images locally
-	make images
+docker: images ##@Build Build all required docker images locally
 
 docker-clean:##@Clean Clean docker images locally
 	make clean-images
