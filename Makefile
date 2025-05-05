@@ -144,7 +144,7 @@ check: ##@Code Check code format
 	sleep 10
 	MODE=dev make stop
 	make check-dashboard
-	
+
 deep-clean: ##@Clean Stop services, clean docker images and remove mounted local storage.
 	make clean-images
 	rm -rf $(LOCAL_STORAGE_PATH)
