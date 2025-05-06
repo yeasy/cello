@@ -1,5 +1,6 @@
 ![Cello](docs/images/favicon.png)
 
+[![Release](https://img.shields.io/github/v/release/hyperledger-cello/cello)](https://github.com/hyperledger-cello/cello/releases)
 [![Build Status](https://github.com/hyperledger/cello/actions/workflows/docker-image.yml/badge.svg)](https://github.com/hyperledger/cello/actions/workflows/docker-image.yml)
 [![License](https://img.shields.io/github/license/hyperledger-cello/cello)](https://github.com/hyperledger-cello/cello/blob/main/LICENSE)
 
