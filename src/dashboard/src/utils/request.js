@@ -1,7 +1,6 @@
-import React from 'react';
 import { extend } from 'umi-request';
 import { notification } from 'antd';
-import { history, formatMessage, getLocale } from 'umi';
+import { history, formatMessage } from 'umi';
 import { stringify } from 'qs';
 
 /**
@@ -9,13 +8,13 @@ import { stringify } from 'qs';
  */
 const errorHandler = error => {
   const { response, data } = error;
-  
+
   if (!response) {
     notification.error({
-      message: formatMessage({ 
+      message: formatMessage({
         id: 'error.network',
-        defaultMessage: 'Network Error'
-      })
+        defaultMessage: 'Network Error',
+      }),
     });
     return;
   }
@@ -27,11 +26,11 @@ const errorHandler = error => {
     const api = url.split('/').pop();
     if (api === 'login') {
       notification.error({
-        message: formatMessage({ 
+        message: formatMessage({
           id: 'error.login.invalidCredentials',
-          defaultMessage: 'Invalid username or password.'
+          defaultMessage: 'Invalid username or password.',
         }),
-        description: url
+        description: url,
       });
       return;
     }
@@ -39,11 +38,11 @@ const errorHandler = error => {
 
   if (status === 401) {
     notification.error({
-      message: formatMessage({ 
+      message: formatMessage({
         id: 'error.login.expired',
-        defaultMessage: 'Not logged in or session expired. Please log in again.'
+        defaultMessage: 'Not logged in or session expired. Please log in again.',
       }),
-      description: url
+      description: url,
     });
     history.replace({
       pathname: '/user/login',
@@ -58,30 +57,33 @@ const errorHandler = error => {
     const api = url.split('/').pop();
     if (api === 'register') {
       notification.error({
-        message: formatMessage({ 
+        message: formatMessage({
           id: 'error.register.duplicate',
-          defaultMessage: 'Email address or organization name already exists.'
+          defaultMessage: 'Email address or organization name already exists.',
         }),
-        description: url
+        description: url,
       });
       return;
     }
   }
 
   // Generic error handling
-  const errorMessage = formatMessage({ 
+  const errorMessage = formatMessage({
     id: `error.request.${status}`,
-    defaultMessage: `Request error (${status})`
+    defaultMessage: `Request error (${status})`,
   });
-  
-  const detailMessage = data?.detail || data?.msg || formatMessage({ 
-    id: 'error.request.generic',
-    defaultMessage: 'An error occurred while processing your request.'
-  });
+
+  const detailMessage =
+    data?.detail ||
+    data?.msg ||
+    formatMessage({
+      id: 'error.request.generic',
+      defaultMessage: 'An error occurred while processing your request.',
+    });
 
   notification.error({
     message: errorMessage,
-    description: `${url}\n${detailMessage}`
+    description: `${url}\n${detailMessage}`,
   });
 
   // Handle navigation for specific error codes
