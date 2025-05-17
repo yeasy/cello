@@ -70,7 +70,7 @@ class ChainCode(Command):
                 "--connTimeout", timeout
             ]
             LOG.info(" ".join(command))
-            res = subprocess.Popen(command, shell=True,
+            res = subprocess.Popen(command, shell=False,
                                       stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
             stdout, stderr = res.communicate()
@@ -173,7 +173,7 @@ class ChainCode(Command):
                 command.append(policy)
 
             LOG.info(" ".join(command))
-            res = subprocess.Popen(command, shell=True,
+            res = subprocess.Popen(command, shell=False,
                                    stdout=subprocess.PIPE, stderr=subprocess.PIPE)
             stdout, stderr = res.communicate()
             return_code = res.returncode

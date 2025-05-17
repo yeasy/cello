@@ -329,9 +329,9 @@ class ChainCodeViewSet(viewsets.ViewSet):
                 channel_name = serializer.validated_data.get("channel_name")
                 chaincode_name = serializer.validated_data.get("chaincode_name")
                 chaincode_version = serializer.validated_data.get("chaincode_version")
-                policy = serializer.validated_data.get("policy")
+                policy = serializer.validated_data.get("policy", "")
                 sequence = serializer.validated_data.get("sequence")
-                init_flag = serializer.validated_data.get("init_flag")
+                init_flag = serializer.validated_data.get("init_flag", False)
 
                 org = request.user.organization
                 qs = Node.objects.filter(type="orderer", organization=org)
