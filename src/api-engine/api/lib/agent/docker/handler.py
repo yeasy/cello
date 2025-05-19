@@ -89,7 +89,7 @@ class DockerAgent(AgentBase):
             else:
                 raise response.reason
         except Exception as e:
-            LOG.error("DockerAgent Not Restarted", exc_info=True)
+            LOG.exception("DockerAgent Not Restarted")
             raise e
 
     def stop(self, *args, **kwargs):
