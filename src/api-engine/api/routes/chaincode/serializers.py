@@ -68,4 +68,4 @@ class ChainCodeApproveForMyOrgBody(serializers.Serializer):
 
 
 class ChainCodeCommitBody(ChainCodeApproveForMyOrgBody):
-    peer_list = serializers.ListField(allow_empty=False, required=True)
+    pass
