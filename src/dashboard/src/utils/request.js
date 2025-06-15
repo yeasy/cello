@@ -93,7 +93,7 @@ const errorHandler = error => {
 
   notification.error({
     message: errorMessage,
-    description: `${url}\n${safeDetailMessage}`,
+    description: safeDetailMessage,
   });
 
   // Handle navigation for specific error codes
