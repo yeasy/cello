@@ -84,11 +84,11 @@ const errorHandler = error => {
   const safeDetailMessage = (obj => {
     if (typeof obj === 'string') {
       return obj;
-    } else if (typeof obj === 'object') {
-      return JSON.stringify(obj);
-    } else {
-      return String(obj);
     }
+    if (typeof obj === 'object') {
+      return JSON.stringify(obj);
+    }
+    return String(obj);
   })(detailMessage);
 
   notification.error({
