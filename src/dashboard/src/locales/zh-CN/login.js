@@ -10,7 +10,7 @@ export default {
   'app.login.sign-in-with': '其他登录方式',
   'app.login.signUp': '注册账户',
   'app.login.login': '登录',
-  'app.login.email': 'E-mail',
+  'app.login.email': '邮箱地址',
   'app.register.register': '注册',
   'app.register.info':
     '此注册功能仅用于创建新组织及其首位管理员账号。如果您的组织已完成注册，请联系组织管理员为您创建个人账号。',
