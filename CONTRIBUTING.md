@@ -8,9 +8,9 @@ In brief, if you want to contribute, create or find some [GitHub Issues](https:/
 
 ## Questions and discussions
 
-* [Mail list](https://lists.lfdecentralizedtrust.org/g/cello)
-* [Wiki](https://lf-hyperledger.atlassian.net/wiki/spaces/cello/overview)
-* [Chat](https://discord.gg/hyperledger)
+* [Wikipage](https://wiki.hyperledger.org/projects/cello): Lots of information and documentation about the project, e.g., meeting schedule, design doc.
+* [Mail List](mailto:hyperledger-cello@lists.hyperledger.org): General technical topics with Cello project.
+* [Discord](https://discord.gg/hyperledger): Real-time online discussions.
 
 ## Code Commit Steps
 
