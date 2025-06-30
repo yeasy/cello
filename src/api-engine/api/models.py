@@ -168,7 +168,8 @@ class Agent(models.Model):
     name = models.CharField(
         help_text="Agent name, can be generated automatically.",
         max_length=64,
-        default=random_name("agent"),
+        unique=True,
+        blank=True
     )
     urls = models.URLField(help_text="Agent URL", null=True, blank=True)
     organization = models.ForeignKey(
@@ -209,6 +210,11 @@ class Agent(models.Model):
         help_text="Agent free ports.",
         null=True,
     )
+
+    def save(self, *args, **kwargs):
+        if not self.name:
+            self.name = random_name("agent")
+        super().save(*args, **kwargs)
 
     def delete(self, using=None, keep_parents=False):
         if self.config_file:
@@ -300,7 +306,8 @@ class Network(models.Model):
     name = models.CharField(
         help_text="network name, can be generated automatically.",
         max_length=64,
-        default=random_name("netowrk"),
+        unique=True,
+        blank=True
     )
     type = models.CharField(
         help_text="Type of network, %s" % NetworkType.values(),
@@ -336,6 +343,11 @@ class Network(models.Model):
 
     class Meta:
         ordering = ("-created_at",)
+
+    def save(self, *args, **kwargs):
+        if not self.name:
+            self.name = random_name("network")
+        super().save(*args, **kwargs)
 
 
 def get_compose_file_path(instance, file):
@@ -477,7 +489,7 @@ class Node(models.Model):
         default=make_uuid,
         editable=True,
     )
-    name = models.CharField(help_text="Node name", max_length=64, default="")
+    name = models.CharField(help_text="Node name", max_length=64, unique=True, blank=True)
     type = models.CharField(
         help_text="""
     Node type defined for network.
@@ -562,7 +574,7 @@ class Node(models.Model):
         using=None,
         update_fields=None,
     ):
-        if self.name == "":
+        if not self.name:
             self.name = random_name(self.type)
         super(Node, self).save(
             force_insert, force_update, using, update_fields
