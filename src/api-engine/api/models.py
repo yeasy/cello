@@ -34,6 +34,7 @@ from api.common.enums import (
 )
 from api.utils.common import make_uuid, random_name, hash_file
 from api.config import CELLO_HOME
+from api.validators import validate_url
 
 SUPER_USER_TOKEN = getattr(settings, "ADMIN_TOKEN", "")
 MAX_CAPACITY = getattr(settings, "MAX_AGENT_CAPACITY", 100)
@@ -171,7 +172,12 @@ class Agent(models.Model):
         unique=True,
         blank=True
     )
-    urls = models.URLField(help_text="Agent URL", null=True, blank=True)
+    urls = models.CharField(
+        help_text="Agent URL",
+        null=True,
+        blank=True,
+        validators=[validate_url]
+    )
     organization = models.ForeignKey(
         "Organization",
         null=True,
