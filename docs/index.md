@@ -41,7 +41,6 @@ For additional helps, feel free to take the following channels:
 
 * [Wikipage](https://lf-hyperledger.atlassian.net/wiki/spaces/cello/overview): Lots of information and documentation about the project, e.g., meeting schedule, design doc.
 * [Mail List](mailto:cello@lists.lfdecentralizedtrust.org): General technical topics with Cello project.
-* [Discord](https://discord.gg/hyperledger): Real-time online discussions.
 * [GitHub](https://github.com/hyperledger-cello/cello): Development related code and patchsets, welcome to [contribute](contributing.md).
 * [Stack Overflow](https://stackoverflow.com/questions/tagged/hyperledger-cello): Stack overflow discussion questions about cello.
 
