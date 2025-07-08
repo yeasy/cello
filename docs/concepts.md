@@ -36,10 +36,13 @@ graph LR
     USER_B --> DASHBOARD
     USER_C --> DASHBOARD
     DASHBOARD --> APIENGINE
-    APIENGINE --> DB
-    APIENGINE --> AGENT_A
-    APIENGINE --> AGENT_B
-    APIENGINE --> AGENT_C
+    APIENGINE --> |Register users, organizations, and networks| DB
+    APIENGINE --> |Ask for node creations| AGENT_A
+    APIENGINE --> |Ask for node creations| AGENT_B
+    APIENGINE --> |Ask for node creations| AGENT_C
+    APIENGINE --> |Forward Blockchain operations| NODE_A
+    APIENGINE --> |Forward Blockchain operations| NODE_B
+    APIENGINE --> |Forward Blockchain operations| NODE_C
     AGENT_A --> |Create via CRI| NODE_A
     AGENT_B --> |Create via CRI| NODE_B
     AGENT_C --> |Create via CRI| NODE_C
@@ -47,6 +50,8 @@ graph LR
 ```
 
 ## Server
+
+*Server* is shared between organizations. It's used for user management and node manipulation. It will ask agents to create nodes and is responsible for **every operation with them**.
 
 ### Components
 
@@ -76,9 +81,16 @@ Host path mappings:
 
 ## Agent
 
-### Kubernetes
+*Agents* run under every organization. It's used for **creating nodes** for the Blockchain networks.
 
-### Fabric Operator
+### Docker
+
+Docker agent will create nodes as users request via the Docker socket.
+
+## Node
+*Nodes* are **what really run inside the Blockchain networks**.
+
+### Hyperledger Fabric
+For more information about the Hyperledger Fabric nodes, please check out the [Hyperledger Fabric Document](https://hyperledger-fabric.readthedocs.io/en/latest/).
 
 <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
-```
