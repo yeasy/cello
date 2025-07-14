@@ -466,8 +466,6 @@ class NodeViewSet(viewsets.ViewSet):
             if org is None:
                 raise ResourceNotFound("Organization Not Found")
             network = org.network
-            if network is None:
-                raise ResourceNotFound("Network Not Found")
             agent = org.agent.get()
             if agent is None:
                 raise ResourceNotFound("Agent Not Found")
@@ -486,7 +484,7 @@ class NodeViewSet(viewsets.ViewSet):
             info["type"] = node.type
             info["name"] = "{}.{}".format(node.name, org_name)
             info["urls"] = agent.urls
-            info["network_type"] = network.type
+            info["network_type"] = None if network is None else network.type
             info["agent_type"] = agent.type
             info["container_name"] = "{}.{}".format(node.name, org_name)
             info["ports"] = ports
@@ -574,62 +572,61 @@ class NodeViewSet(viewsets.ViewSet):
         :rtype: rest_framework.status
         """
         try:
-            try:
-                node = Node.objects.get(id=pk)
-                infos = self._agent_params(pk)
-                agent = AgentHandler(infos)
-                agent_exist = agent.get()
-                node.status = "removing"
-                node.save()
-                if node.type == "orderer":
-                    orderer_cnt = Node.objects.filter(
-                        type="orderer", organization__network=node.organization.network).count()
-                    if orderer_cnt == 1:
-                        raise ResourceInUse("Orderer In Use")
-                res = False
-                # if agent not exist or no continer is created for node, do not try to stop/delete container
-                if not agent_exist or not node.cid:
-                    res = True
-                else:
-                    # try to stop/delete container 3 times
-                    # TODO: optimize the retry logic
-                    for i in range(3):
-                        LOG.info(
-                            "Retry to stop/delete container %d time(s).", i + 1)
-                        try:
-                            response = agent.stop()
-                            if response is not True:
-                                LOG.error(
-                                    "Failed when agent stops/deletes container: %s", response)
-                                continue
-                            response = agent.delete()
-                            if response is not True:
-                                LOG.error(
-                                    "Failed when agent stops/deletes container: %s", response)
-                                continue
-                            res = True
-                        except Exception as e:
+            node = Node.objects.get(id=pk)
+            infos = self._agent_params(pk)
+            agent = AgentHandler(infos)
+            agent_exist = agent.get()
+            node.status = "removing"
+            node.save()
+            if node.type == "orderer" and node.organization.network is not None:
+                orderer_cnt = Node.objects.filter(
+                    type="orderer", organization__network=node.organization.network).count()
+                if orderer_cnt == 1:
+                    raise ResourceInUse("Orderer In Use")
+            res = False
+            # if agent not exist or no continer is created for node, do not try to stop/delete container
+            if not agent_exist or not node.cid:
+                res = True
+            else:
+                # try to stop/delete container 3 times
+                # TODO: optimize the retry logic
+                for i in range(3):
+                    LOG.info(
+                        "Retry to stop/delete container %d time(s).", i + 1)
+                    try:
+                        response = agent.stop()
+                        if response is not True:
                             LOG.error(
-                                "Exception when agent stops/deletes container: %s", e)
+                                "Failed when agent stops/deletes container: %s", response)
                             continue
-                        break
-                if res:
-                    fabric_path = "{}/{}".format(FABRIC_NODE,
-                                                 infos["container_name"])
-                    if os.path.exists(fabric_path):
-                        shutil.rmtree(fabric_path, True)
-                    prod_path = "{}/{}".format(PRODUCTION_NODE,
-                                               infos["container_name"])
-                    if os.path.exists(prod_path):
-                        shutil.rmtree(prod_path, True)
-                    node.delete()
-                    # node.status = "exited"
-                    # node.save()
-                else:
-                    return Response(ok({"delete": False}), status=status.HTTP_202_ACCEPTED)
-            except ObjectDoesNotExist:
-                raise ResourceNotFound("Node Not Found")
+                        response = agent.delete()
+                        if response is not True:
+                            LOG.error(
+                                "Failed when agent stops/deletes container: %s", response)
+                            continue
+                        res = True
+                    except Exception as e:
+                        LOG.error(
+                            "Exception when agent stops/deletes container: %s", e)
+                        continue
+                    break
+            if res:
+                fabric_path = "{}/{}".format(FABRIC_NODE,
+                                                infos["container_name"])
+                if os.path.exists(fabric_path):
+                    shutil.rmtree(fabric_path, True)
+                prod_path = "{}/{}".format(PRODUCTION_NODE,
+                                            infos["container_name"])
+                if os.path.exists(prod_path):
+                    shutil.rmtree(prod_path, True)
+                node.delete()
+                # node.status = "exited"
+                # node.save()
+            else:
+                return Response(ok({"delete": False}), status=status.HTTP_202_ACCEPTED)
             return Response(ok({"delete": True}), status=status.HTTP_202_ACCEPTED)
+        except ObjectDoesNotExist:
+            raise ResourceNotFound("Node Not Found")
         except (ResourceNotFound, ResourceInUse) as e:
             raise e
         except Exception as e:
