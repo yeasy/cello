@@ -611,12 +611,10 @@ class NodeViewSet(viewsets.ViewSet):
                         continue
                     break
             if res:
-                fabric_path = "{}/{}".format(FABRIC_NODE,
-                                                infos["container_name"])
+                fabric_path = "{}/{}".format(FABRIC_NODE, infos["container_name"])
                 if os.path.exists(fabric_path):
                     shutil.rmtree(fabric_path, True)
-                prod_path = "{}/{}".format(PRODUCTION_NODE,
-                                            infos["container_name"])
+                prod_path = "{}/{}".format(PRODUCTION_NODE, infos["container_name"])
                 if os.path.exists(prod_path):
                     shutil.rmtree(prod_path, True)
                 node.delete()
