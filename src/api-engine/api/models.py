@@ -170,13 +170,10 @@ class Agent(models.Model):
         help_text="Agent name, can be generated automatically.",
         max_length=64,
         unique=True,
-        blank=True
+        blank=True,
     )
     urls = models.CharField(
-        help_text="Agent URL",
-        null=True,
-        blank=True,
-        validators=[validate_url]
+        help_text="Agent URL", null=True, blank=True, validators=[validate_url]
     )
     organization = models.ForeignKey(
         "Organization",
@@ -313,7 +310,7 @@ class Network(models.Model):
         help_text="network name, can be generated automatically.",
         max_length=64,
         unique=True,
-        blank=True
+        blank=True,
     )
     type = models.CharField(
         help_text="Type of network, %s" % NetworkType.values(),
@@ -495,7 +492,9 @@ class Node(models.Model):
         default=make_uuid,
         editable=True,
     )
-    name = models.CharField(help_text="Node name", max_length=64, unique=True, blank=True)
+    name = models.CharField(
+        help_text="Node name", max_length=64, unique=True, blank=True
+    )
     type = models.CharField(
         help_text="""
     Node type defined for network.

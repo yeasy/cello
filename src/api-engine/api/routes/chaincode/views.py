@@ -536,7 +536,9 @@ class ChainCodeViewSet(viewsets.ViewSet):
         qs = Node.objects.filter(type="orderer", organization=org)
         if not qs.exists():
             raise ResourceNotFound("Orderer Does Not Exist")
-        return qs.first().name + "." + org.name.split(".", 1)[1] + ":" + str(7050)
+        return (
+            qs.first().name + "." + org.name.split(".", 1)[1] + ":" + str(7050)
+        )
 
     def _get_peer_channel_cli(self, org):
         qs = Node.objects.filter(type="peer", organization=org)
@@ -545,15 +547,29 @@ class ChainCodeViewSet(viewsets.ViewSet):
         envs = init_env_vars(qs.first(), org)
         return PeerChainCode(**envs)
 
-    def _get_approved_organizations_by_channel_and_chaincode(self, peer_channel_cli, channel_name, chaincode_name, chaincode_version, sequence):
-        code, readiness_result = peer_channel_cli.lifecycle_check_commit_readiness(
-            channel_name, chaincode_name, chaincode_version, sequence)
+    def _get_approved_organizations_by_channel_and_chaincode(
+        self,
+        peer_channel_cli,
+        channel_name,
+        chaincode_name,
+        chaincode_version,
+        sequence,
+    ):
+        code, readiness_result = (
+            peer_channel_cli.lifecycle_check_commit_readiness(
+                channel_name, chaincode_name, chaincode_version, sequence
+            )
+        )
         if code != 0:
-            raise Exception(f"Check commit readiness failed: {readiness_result}")
+            raise Exception(
+                f"Check commit readiness failed: {readiness_result}"
+            )
 
         # Check approved status
         approvals = readiness_result.get("approvals", {})
-        approved_msps = [org_msp for org_msp, approved in approvals.items() if approved]
+        approved_msps = [
+            org_msp for org_msp, approved in approvals.items() if approved
+        ]
         if not approved_msps:
             raise Exception("No organizations have approved this chaincode")
 
@@ -570,12 +586,16 @@ class ChainCodeViewSet(viewsets.ViewSet):
         approved_orgs = []
         for msp_id in approved_msps:
             if msp_id.endswith("MSP"):
-                org_prefix = msp_id[:-3].lower()  # remove "MSP" and convert to lowercase
+                org_prefix = msp_id[
+                    :-3
+                ].lower()  # remove "MSP" and convert to lowercase
                 # find the corresponding organization in the channel
                 for channel_org in channel_orgs:
                     if channel_org.name.split(".")[0] == org_prefix:
                         approved_orgs.append(channel_org)
-                        LOG.info(f"Found approved organization: {channel_org.name} (MSP: {msp_id})")
+                        LOG.info(
+                            f"Found approved organization: {channel_org.name} (MSP: {msp_id})"
+                        )
                         break
 
         if not approved_orgs:
@@ -588,16 +608,15 @@ class ChainCodeViewSet(viewsets.ViewSet):
         for org in orgs:
             qs = Node.objects.filter(type="peer", organization=org)
             if not qs.exists():
-                LOG.warning(f"No peer nodes found for organization: {org.name}")
+                LOG.warning(
+                    f"No peer nodes found for organization: {org.name}"
+                )
                 continue
 
             # select the first peer node for each organization
             peer = qs.first()
             peer_tls_cert = "{}/{}/crypto-config/peerOrganizations/{}/peers/{}/tls/ca.crt".format(
-                CELLO_HOME,
-                org.name,
-                org.name,
-                peer.name + "." + org.name
+                CELLO_HOME, org.name, org.name, peer.name + "." + org.name
             )
             peer_address = peer.name + "." + org.name + ":" + str(7051)
             LOG.info(f"Added peer from org {org.name}: {peer_address}")
@@ -636,25 +655,39 @@ class ChainCodeViewSet(viewsets.ViewSet):
 
                 # Step 1: Check commit readiness, find all approved organizations
                 peer_channel_cli = self._get_peer_channel_cli(org)
-                approved_organizations = self._get_approved_organizations_by_channel_and_chaincode(
-                    peer_channel_cli,
-                    channel_name,
-                    chaincode_name,
-                    chaincode_version,
-                    sequence
+                approved_organizations = (
+                    self._get_approved_organizations_by_channel_and_chaincode(
+                        peer_channel_cli,
+                        channel_name,
+                        chaincode_name,
+                        chaincode_version,
+                        sequence,
+                    )
                 )
 
                 # Step 2: Get peer nodes and root certs
-                peer_address_list, peer_root_certs = self._get_peer_addresses_and_certs_by_organizations(approved_organizations)
+                peer_address_list, peer_root_certs = (
+                    self._get_peer_addresses_and_certs_by_organizations(
+                        approved_organizations
+                    )
+                )
 
                 # Step 3: Commit chaincode
                 code = peer_channel_cli.lifecycle_commit(
-                    orderer_url, channel_name, chaincode_name, chaincode_version,
-                    sequence, policy, peer_address_list, peer_root_certs, init_flag)
+                    orderer_url,
+                    channel_name,
+                    chaincode_name,
+                    chaincode_version,
+                    sequence,
+                    policy,
+                    peer_address_list,
+                    peer_root_certs,
+                    init_flag,
+                )
                 if code != 0:
                     return Response(
                         err("Commit chaincode failed"),
-                        status=status.HTTP_400_BAD_REQUEST
+                        status=status.HTTP_400_BAD_REQUEST,
                     )
 
                 LOG.info(f"Chaincode {chaincode_name} committed successfully")
