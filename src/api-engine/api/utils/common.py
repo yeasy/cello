@@ -310,6 +310,7 @@ def init_env_vars(node, org):
                 dir_certificate, node.name + "." + org_domain
             ),
         }
+
     elif node.type == "peer":
         envs = {
             "CORE_PEER_TLS_ENABLED": "true",
