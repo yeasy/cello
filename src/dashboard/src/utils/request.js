@@ -127,23 +127,4 @@ request.interceptors.request.use(async (url, options) => {
   };
 });
 
-// 第一个拦截器有可能返回Promise,那么Promise由第二个拦截器处理
-request.interceptors.request.use(async (url, options) => {
-  const token = localStorage.getItem('cello-token');
-  if (url.indexOf('api/v1/login') < 0 && url.indexOf('api/v1/register') < 0 && token) {
-    // 如果有token 就走token逻辑
-    const headers = {
-      Authorization: `JWT ${token}`,
-    };
-    return {
-      url,
-      options: { ...options, headers },
-    };
-  }
-  return {
-    url,
-    options,
-  };
-});
-
 export default request;
