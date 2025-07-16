@@ -479,6 +479,12 @@ class Channel extends PureComponent {
     });
   };
 
+  handleSelectRows = rows => {
+    this.setState({
+      selectedRows: rows,
+    });
+  };
+
   render() {
     const { selectedRows, modalVisible, channelData, updateModalVisible, newFile } = this.state;
     const {
