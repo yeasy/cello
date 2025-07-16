@@ -31,7 +31,6 @@ const errorHandler = error => {
           id: 'error.login.invalidCredentials',
           defaultMessage: 'Invalid username or password.',
         }),
-        description: url,
       });
       return;
     }
@@ -41,7 +40,6 @@ const errorHandler = error => {
         id: 'error.login.expired',
         defaultMessage: 'Not logged in or session expired. Please log in again.',
       }),
-      description: url,
     });
     history.replace({
       pathname: '/user/login',
@@ -60,7 +58,6 @@ const errorHandler = error => {
           id: 'error.register.duplicate',
           defaultMessage: 'Email address or organization name already exists.',
         }),
-        description: url,
       });
       return;
     }
