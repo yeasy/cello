@@ -186,6 +186,12 @@ class ChainCode extends PureComponent {
     this.setState({ newFile: file });
   };
 
+  handleSelectRows = rows => {
+    this.setState({
+      selectedRows: rows,
+    });
+  };
+
   render() {
     const {
       selectedRows,
