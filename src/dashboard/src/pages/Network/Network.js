@@ -110,6 +110,12 @@ class Network extends PureComponent {
     }
   };
 
+  handleSelectRows = rows => {
+    this.setState({
+      selectedRows: rows,
+    });
+  };
+
   render() {
     const { selectedRows } = this.state;
     const {
