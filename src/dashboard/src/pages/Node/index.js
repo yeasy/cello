@@ -230,7 +230,7 @@ const CreateNode = props => {
     },
   };
 
-  const types = ['ca', 'orderer', 'peer'];
+  const types = ['orderer', 'peer'];
   const typeOptions = types.map(item => (
     <Option value={item} key={item}>
       <span style={{ color: '#8c8f88' }}>{item}</span>
