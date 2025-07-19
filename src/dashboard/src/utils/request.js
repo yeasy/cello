@@ -31,7 +31,6 @@ const errorHandler = error => {
           id: 'error.login.invalidCredentials',
           defaultMessage: 'Invalid username or password.',
         }),
-        description: url,
       });
       return;
     }
@@ -41,7 +40,6 @@ const errorHandler = error => {
         id: 'error.login.expired',
         defaultMessage: 'Not logged in or session expired. Please log in again.',
       }),
-      description: url,
     });
     history.replace({
       pathname: '/user/login',
@@ -60,7 +58,6 @@ const errorHandler = error => {
           id: 'error.register.duplicate',
           defaultMessage: 'Email address or organization name already exists.',
         }),
-        description: url,
       });
       return;
     }
@@ -113,25 +110,6 @@ const request = extend({
 request.interceptors.request.use(async (url, options) => {
   const token = window.localStorage.getItem('cello-token');
   if (url.indexOf('api/v1/login') < 0 && url.indexOf('api/v1/register') < 0 && token) {
-    const headers = {
-      Authorization: `JWT ${token}`,
-    };
-    return {
-      url,
-      options: { ...options, headers },
-    };
-  }
-  return {
-    url,
-    options,
-  };
-});
-
-// 第一个拦截器有可能返回Promise,那么Promise由第二个拦截器处理
-request.interceptors.request.use(async (url, options) => {
-  const token = localStorage.getItem('cello-token');
-  if (url.indexOf('api/v1/login') < 0 && url.indexOf('api/v1/register') < 0 && token) {
-    // 如果有token 就走token逻辑
     const headers = {
       Authorization: `JWT ${token}`,
     };
