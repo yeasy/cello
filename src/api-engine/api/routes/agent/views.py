@@ -108,11 +108,12 @@ class AgentViewSet(viewsets.ViewSet):
                 ]
 
                 response = AgentListResponse(
-                    instance={"data": agent_list, "total": p.count}
+                    data={"data": agent_list, "total": p.count}
                 )
-                return Response(
-                    ok(response.data), status=status.HTTP_200_OK
-                )
+                if response.is_valid(raise_exception=True):
+                    return Response(
+                        ok(response.validated_data), status=status.HTTP_200_OK
+                    )
         except Exception as e:
             return Response(
                 err(e.args), status=status.HTTP_400_BAD_REQUEST
