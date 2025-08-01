@@ -168,7 +168,6 @@ class Agent(models.Model):
     name = models.CharField(
         help_text="Agent name, can be generated automatically.",
         max_length=64,
-        unique=True,
         blank=True
     )
     urls = models.CharField(
