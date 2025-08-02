@@ -14,11 +14,11 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.test(\"Status code is 201\", function () {",
-							"    pm.response.to.have.status(201);",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
 							"});",
 							"",
-							"if (pm.response.code === 201) {",
+							"if (pm.response.code === 200) {",
 							"    var jsonData = pm.response.json();",
 							"    pm.environment.set(\"org_id\", jsonData.data.id);",
 							"}"
@@ -38,7 +38,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"username\": \"admin\",\n\t\"email\": \"admin@email.com\",\n\t\"password\": \"password\",\n\t\"orgName\": \"org1.example.com\"\n}"
+					"raw": "{\n\t\"email\": \"foo@email.com\",\n\t\"password\": \"foo\",\n\t\"orgName\": \"org1.foo.com\"\n}"
 				},
 				"url": {
 					"raw": "{{base_url}}/api/v1/register",
@@ -189,7 +189,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"name\": \"peer0\",\n\t\"type\": \"peer\",\n\t\"num\": 1\n}"
+					"raw": "{\n\t\"name\": \"peer0\",\n\t\"type\": \"peer\"\n}"
 				},
 				"url": {
 					"raw": "{{base_url}}/api/v1/nodes",
@@ -241,7 +241,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"name\": \"orderer0\",\n\t\"type\": \"orderer\",\n\t\"num\": 1\n}"
+					"raw": "{\n\t\"name\": \"orderer0\",\n\t\"type\": \"orderer\"\n}"
 				},
 				"url": {
 					"raw": "{{base_url}}/api/v1/nodes",
@@ -271,6 +271,10 @@
 							"if (pm.response.code === 201) {",
 							"    var jsonData = pm.response.json();",
 							"    pm.environment.set(\"network_id\", jsonData.data.id);",
+							"    ",
+							"    setTimeout(function() {",
+							"        console.log(\"Delayed 5 seconds\");",
+							"    }, 5000);",
 							"}"
 						],
 						"type": "text/javascript"
@@ -293,7 +297,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"name\": \"test-network\",\n\t\"consensus\": \"etcdraft\",\n\t\"database\": \"leveldb\"\n}"
+					"raw": "{\n\t\"name\": \"test-network\",\n\t\"consensus\": \"etcdraft\",\n\t\"database\": \"couchdb\"\n}"
 				},
 				"url": {
 					"raw": "{{base_url}}/api/v1/networks",
@@ -323,6 +327,10 @@
 							"if (pm.response.code === 201) {",
 							"    var jsonData = pm.response.json();",
 							"    pm.environment.set(\"channel_id\", jsonData.id);",
+							"    ",
+							"    setTimeout(function() {",
+							"        console.log(\"Delayed 10 seconds\");",
+							"    }, 10000);",
 							"}"
 						],
 						"type": "text/javascript"
@@ -368,14 +376,9 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.test(\"Status code is 201\", function () {",
-							"    pm.response.to.have.status(201);",
-							"});",
-							"",
-							"if (pm.response.code === 201) {",
-							"    var jsonData = pm.response.json();",
-							"    pm.environment.set(\"chaincode_id\", jsonData.data.id);",
-							"}"
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
 						],
 						"type": "text/javascript"
 					}
@@ -396,8 +399,8 @@
 						{
 							"key": "file",
 							"type": "file",
-							"src": [],
-							"description": "Chaincode package (.tar.gz)"
+							"src": ["basic.tar.gz"],
+							"description": "basic chaincode package"
 						},
 						{
 							"key": "description",
@@ -422,7 +425,78 @@
 			}
 		},
 		{
-			"name": "Approve Chaincode",
+			"name": "List Chaincodes",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"if (pm.response.code === 200) {",
+							"    var jsonData = pm.response.json();",
+							"    if (jsonData.data && jsonData.data.data && jsonData.data.data.length > 0) {",
+							"        var latestChaincode = jsonData.data.data[0];",
+							"        pm.environment.set(\"package_id\", latestChaincode.package_id);",
+							"    } else {",
+							"        console.log(\"No chaincodes found in response\");",
+							"    }",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "JWT {{token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/api/v1/chaincodes?page=1&per_page=10",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"chaincodes"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "1"
+						},
+						{
+							"key": "per_page",
+							"value": "10"
+						}
+					]
+				},
+				"description": "List chaincodes to get the latest uploaded chaincode ID"
+			}
+		},
+		{
+			"name": "Install Chaincode",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "POST",
 				"header": [
@@ -439,10 +513,10 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"channel_name\": \"mychannel\",\n\t\"chaincode_name\": \"mycc\",\n\t\"chaincode_version\": \"1.0\",\n\t\"sequence\": 1,\n\t\"policy\": \"\",\n\t\"init_flag\": false\n}"
+					"raw": "{\n\t\"id\": \"{{package_id}}\",\n\t\"node\": \"{{peer_id}}\"\n}"
 				},
 				"url": {
-					"raw": "{{base_url}}/api/v1/chaincodes/{{chaincode_id}}/approve",
+					"raw": "{{base_url}}/api/v1/chaincodes/install",
 					"host": [
 						"{{base_url}}"
 					],
@@ -450,8 +524,55 @@
 						"api",
 						"v1",
 						"chaincodes",
-						"{{chaincode_id}}",
-						"approve"
+						"install"
+					]
+				},
+				"description": "Install chaincode package to peer node"
+			}
+		},
+		{
+			"name": "Approve Chaincode",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "JWT {{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"channel_name\": \"mychannel\",\n\t\"chaincode_name\": \"basic\",\n\t\"chaincode_version\": \"1.0\",\n\t\"sequence\": 1,\n\t\"policy\": \"\",\n\t\"init_flag\": false\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/api/v1/chaincodes/approve_for_my_org",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"chaincodes",
+						"approve_for_my_org"
 					]
 				},
 				"description": "Approve chaincode for organization"
@@ -459,6 +580,19 @@
 		},
 		{
 			"name": "Commit Chaincode",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "POST",
 				"header": [
@@ -475,10 +609,10 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"channel_name\": \"mychannel\",\n\t\"chaincode_name\": \"mycc\",\n\t\"chaincode_version\": \"1.0\",\n\t\"sequence\": 1,\n\t\"policy\": \"\",\n\t\"init_flag\": false\n}"
+					"raw": "{\n\t\"channel_name\": \"mychannel\",\n\t\"chaincode_name\": \"basic\",\n\t\"chaincode_version\": \"1.0\",\n\t\"sequence\": 1,\n\t\"policy\": \"\",\n\t\"init_flag\": false\n}"
 				},
 				"url": {
-					"raw": "{{base_url}}/api/v1/chaincodes/{{chaincode_id}}/commit",
+					"raw": "{{base_url}}/api/v1/chaincodes/commit",
 					"host": [
 						"{{base_url}}"
 					],
@@ -486,7 +620,6 @@
 						"api",
 						"v1",
 						"chaincodes",
-						"{{chaincode_id}}",
 						"commit"
 					]
 				},
@@ -536,7 +669,7 @@
 			"type": "string"
 		},
 		{
-			"key": "chaincode_id",
+			"key": "package_id",
 			"value": "",
 			"type": "string"
 		}
