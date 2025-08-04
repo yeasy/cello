@@ -1,6 +1,7 @@
 site_name: Hyperledger Cello
 repo_name: "hyperledger/cello"
 repo_url: "https://github.com/hyperledger/cello"
+dev_addr: 0.0.0.0:8000
 theme:
   name: "material"
   logo: "images/favicon.png"
