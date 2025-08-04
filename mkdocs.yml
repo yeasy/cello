@@ -41,6 +41,9 @@ nav:
           - Architecture: design/arch.md
       - Setup:
           - Server: setup/server.md
+      - Tutorials:
+          - "Lesson 0: Introduction": tutorials/introduction.md
+          - "Lesson 1: Prerequisites": tutorials/prerequisites.md
       - Agent:
           - Kubernetes: agents/kubernetes.md
           - Fabric operator: agents/fabric-operator.md
