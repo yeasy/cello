@@ -8,8 +8,18 @@ theme:
   feature:
     tabs: true
   palette:
-    primary: "light-blue"
-    accent: "light-blue"
+    - scheme: default
+      toggle:
+        icon: material/brightness-7 
+        name: Switch to dark mode
+      primary: "light-blue"
+      accent: "light-blue"
+    - scheme: slate
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+      primary: "light-blue"
+      accent: "light-blue"
   font:
     text: "Ubuntu"
     code: "Ubuntu Mono"
