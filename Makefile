@@ -229,7 +229,6 @@ dashboard:
 server:
 	docker compose -f bootup/docker-compose-files/docker-compose.server.dev.yml up -d --force-recreate --remove-orphans
 
-
 .PHONY: \
 	all \
 	license \
@@ -254,3 +253,4 @@ server:
 	start-docker-compose \
 	stop-docker-compose \
 	images \
+	server\
