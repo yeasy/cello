@@ -9,6 +9,7 @@ theme:
   features:
     - navigation.tabs
     - navigation.top
+    - content.code.copy
   palette:
     - scheme: default
       toggle:
