@@ -5,8 +5,8 @@ theme:
   name: "material"
   logo: "images/favicon.png"
   favicon: "images/favicon.png"
-  feature:
-    tabs: true
+  features:
+    - navigation.tabs
   palette:
     - scheme: default
       toggle:
@@ -44,31 +44,30 @@ markdown_extensions:
       mode: view
 docs_dir: docs
 nav:
-  - Docs:
-      - Overview: index.md
-      - Concepts: concepts.md
-      - Design:
-          - Architecture: design/arch.md
-      - Setup:
-          - Server: setup/server.md
-      - Tutorials:
-          - "Lesson 0: Introduction": tutorials/introduction.md
-          - "Lesson 1: Prerequisites": tutorials/prerequisites.md
-      - Agent:
-          - Kubernetes: agents/kubernetes.md
-          - Fabric operator: agents/fabric-operator.md
-      - Operations:
-          - Dashboard:
-              - Operator operations: operations/dashboard/operator.md
-              - Admin operations: operations/dashboard/admin.md
-              - User operations: operations/dashboard/user.md
-      - Reference:
-          - Configuration:
-              - Server Configuration: reference/configuration/server.md
-          - Commands:
-              - make: reference/commands/make.md
-              - cli: reference/commands/cli.md
-      - Contribute: contributing.md
+  - Home: index.md
+  - Concepts: concepts.md
+  - Design:
+      - Architecture: design/arch.md
+  - Setup:
+      - Server: setup/server.md
+  - Tutorials:
+      - "Lesson 0: Introduction": tutorials/introduction.md
+      - "Lesson 1: Prerequisites": tutorials/prerequisites.md
+  - Agent:
+      - Kubernetes: agents/kubernetes.md
+      - Fabric operator: agents/fabric-operator.md
+  - Operations:
+      - Dashboard:
+          - Operator operations: operations/dashboard/operator.md
+          - Admin operations: operations/dashboard/admin.md
+          - User operations: operations/dashboard/user.md
+  - Reference:
+      - Configuration:
+          - Server Configuration: reference/configuration/server.md
+      - Commands:
+          - make: reference/commands/make.md
+          - cli: reference/commands/cli.md
+  - Contribute: contributing.md
   - FAQ:
       - faq.md
   - Release Notes:

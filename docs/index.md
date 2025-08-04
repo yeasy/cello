@@ -1,3 +1,8 @@
+---
+hide:
+  - navigation
+---
+
 Welcome to Hyperledger Cello
 ===
 
