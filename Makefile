@@ -145,6 +145,9 @@ deep-clean: ##@Clean Stop services, clean docker images and remove mounted local
 	make clean-images
 	rm -rf $(LOCAL_STORAGE_PATH)
 
+docs:
+	make doc
+
 doc: ##@Documentation Build local online documentation and start serve
 	command -v mkdocs >/dev/null 2>&1 || pip install -r docs/requirements.txt || pip3 -r docs/requirements.txt
 	mkdocs serve -f mkdocs.yml
@@ -231,6 +234,7 @@ server:
 	all \
 	license \
 	check \
+	docs \
 	doc \ 
 	help \
 	docker \
