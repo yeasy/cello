@@ -14,16 +14,18 @@ To set up the environment for the following lessons, make sure you have these 3 
 2. [*make*](https://www.gnu.org/software/make)
 3. [*docker*](https://docs.docker.com/get-started/get-docker)
 
+All of them are usually available through package managers.
+
 So far, no compatibility issues have been reported with the versions of these tools. However, if you encounter any problems, feel free to let us know via the [*GitHub*](https://github.com/hyperledger-cello/cello) page.
 
 Now, navigate to the directory where you want to place the project and run:
 ```bash
-$ git clone https://github.com/hyperledger-cello/cello
+git clone https://github.com/hyperledger-cello/cello
 ```
 
 If the command runs successfully, switch into the project directory:
 ```bash
-$ cd cello
+cd cello
 ```
 
 That's it for this lesson. See you in the next one!
