@@ -24,8 +24,8 @@ theme:
       primary: "light-blue"
       accent: "light-blue"
   font:
-    text: "Ubuntu"
-    code: "Ubuntu Mono"
+    text: "Ubuntu Sans"
+    code: "Ubuntu Sans Mono"
 markdown_extensions:
   - admonition
   - codehilite
