@@ -204,6 +204,9 @@ clean-images:
 check-dashboard:
 	docker compose -f tests/dashboard/docker-compose.yml up --abort-on-container-exit || (echo "check dashboard failed $$?"; exit 1)
 
+check-api: ##@Test Run API tests with newman
+	cd tests/postman && docker compose up --abort-on-container-exit || (echo "API tests failed $$?"; exit 1)
+
 start-docker-compose:
 	docker compose -f bootup/docker-compose-files/${COMPOSE_FILE} up -d --force-recreate --remove-orphans
 
@@ -233,7 +236,9 @@ server:
 	all \
 	license \
 	check \
-	docs \
+	check-api \
+	check-dashboard \
+  docs \
 	doc \ 
 	help \
 	docker \
