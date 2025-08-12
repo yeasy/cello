@@ -219,7 +219,7 @@ images: api-engine docker-rest-agent fabric dashboard
 
 api-engine: 
 	docker build -t hyperledger/cello-api-engine:latest -f build_image/docker/common/api-engine/Dockerfile.in ./ --platform linux/$(ARCH)
-	
+
 docker-rest-agent:
 	docker build -t hyperledger/cello-agent-docker:latest -f build_image/docker/agent/docker-rest-agent/Dockerfile.in ./ --build-arg pip=$(PIP) --platform linux/$(ARCH)
 
@@ -232,13 +232,16 @@ dashboard:
 server:
 	docker compose -f bootup/docker-compose-files/docker-compose.server.dev.yml up -d --force-recreate --remove-orphans
 
+agent:
+	docker compose -f bootup/docker-compose-files/docker-compose.agent.dev.yml up -d --force-recreate --remove-orphans
+
 .PHONY: \
 	all \
 	license \
 	check \
 	check-api \
 	check-dashboard \
-  docs \
+    docs \
 	doc \ 
 	help \
 	docker \
@@ -258,4 +261,5 @@ server:
 	start-docker-compose \
 	stop-docker-compose \
 	images \
-	server\
+	server \
+	agent

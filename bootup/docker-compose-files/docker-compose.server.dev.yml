@@ -1,14 +1,7 @@
-# This compose file will deploy the services, and bootup a postgres server.
-
 #
 # SPDX-License-Identifier: Apache-2.0
 #
 
-#  cello-dashboard: dashboard service for cello
-#  cello-api-engine: api engine service of cello to provide RESTful APIs, listen on 8080
-#  cello-postgres: postgres db 
-
-version: '3.2'
 services:
   cello-dashboard:
     image: hyperledger/cello-dashboard
