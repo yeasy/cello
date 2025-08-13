@@ -12,7 +12,7 @@ Now go back to it because we're going to enter the server.
 
 The site asks for your email and password to login, but since we haven't registered before, just click on the "register" first.
 
-Once you switch to the registration form, you may notice that there is a description on it:
+Once you switch to the registration form, you may notice that there is an admonition on it:
 
 > This registration form is only for setting up a new organization and its first administrator. If your organization already exists, please ask your administrator to create your account.
 
@@ -40,8 +40,7 @@ In the next lesson, we'll talk about how you can connect you server with your ag
 
 See you then👋!
 
-## P.S. The "default" user
+!!! info "P.S. The "default" user"
+    You may have noticed that on the user management page, there is another user named "admin" created besides the user you just registered for yourself. That's the "default" user. The default user can't operate anything because it has no organization, but it allows one to login a *Hyperledger Cello* server to wander around and check if it's OK.
 
-You may notice that on the user management page, there is another user named "admin" created besides the user you just registered for yourself. That's the "default" user. The default user can't operate anything because it has no organization, but it allows one to login a *Hyperledger Cello* server to wander around and check if it's OK.
-
-The default user email and password is assigned by the environment varables `API_ENGINE_ADMIN_EMAIL` and `API_ENGINE_ADMIN_PASSWORD` of the api engine container. By default, they're `admin@cello.com` and `pass`.
+    The default user email and password is assigned by the environment varables `API_ENGINE_ADMIN_EMAIL` and `API_ENGINE_ADMIN_PASSWORD` of the api engine container. By default, they're `admin@cello.com` and `pass`.

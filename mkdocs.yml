@@ -38,6 +38,7 @@ markdown_extensions:
   - markdown.extensions.meta
   - markdown.extensions.toc:
       permalink: true
+  - pymdownx.details
   - pymdownx.superfences:
       custom_fences:
         - name: mermaid

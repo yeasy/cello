@@ -4,7 +4,8 @@ By the end of this lesson, you'll be able to set up a *Hyperledger Cello* server
 
 To do so, we'll set up 3 components of it: dashboard, database, and the api engine.
 
-See also: [*Concepts*](../concepts.md).
+!!! info
+    See also: [*Concepts*](../concepts.md).
 
 ## Image
 ### Dashboard
@@ -61,13 +62,13 @@ In the next lesson, we'll talk about how you can run an agent for it.
 
 See you then👋!
 
-## P.S. The "Quickstart" Way
-Alternatively, you can run
-```bash
-make local
-```
+!!! info "P.S. The "Quickstart" Way"
+    Alternatively, you can run
+    ```bash
+    make local
+    ```
 
-to set up a *Hyperledger Cello* server and agent in the same place as quick as possible.
+    to set up a *Hyperledger Cello* **server and agent** in the same place as quick as possible.
 
-However, in order to give you a deeper understanding of how everything works, 
-we instead walked through the entire setup step-by-step in this tutorial.
+    However, in order to give you a deeper understanding of how everything works, 
+    we instead walked through the entire setup step-by-step in this tutorial.
