@@ -45,7 +45,7 @@ In the next lesson, we'll talk about how you can create an organization and its 
 See you then👋!
 
 !!! info "P.S. The "Quickstart" Way"
-    Alternatively, you can run
+    Just as mentioned in the [last lesson](./server.md), alternatively, you can run
     ```bash
     make local
     ```

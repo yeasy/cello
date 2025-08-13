@@ -34,7 +34,7 @@ Additionally, you can start invite others to your organization by registering th
 
 ## Conclusion
 
-That's it! You have successfully create your organization and register a user🎉!
+That's it! You have successfully created your organization and register a user🎉!
 
 In the next lesson, we'll talk about how you can connect you server with your agent.
 

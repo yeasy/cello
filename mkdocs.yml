@@ -61,6 +61,7 @@ nav:
       - "Lesson 2: Server": tutorials/server.md
       - "Lesson 3: Agent": tutorials/agent.md
       - "Lesson 4: User & Organization": tutorials/organization.md
+      - "Lesson 5: Agent, Network, & Node": tutorials/node.md
   - Agent:
       - Kubernetes: agents/kubernetes.md
       - Fabric operator: agents/fabric-operator.md
