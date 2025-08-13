@@ -55,11 +55,11 @@ Go to [http://0.0.0.0:8081](http://0.0.0.0:8081) (replace the hostname with your
 If you can see the login page on your browser, you're good to go.
 
 ## Conclusion
-That's it! You have successfully run a *Hyperledger Cello* server on your computer.
+That's it! You have successfully run a *Hyperledger Cello* server on your computer🎉.
 
 In the next lesson, we'll talk about how you can run an agent for it.
 
-See you then!
+See you then👋!
 
 ## P.S. The "Quickstart" Way
 Alternatively, you can run

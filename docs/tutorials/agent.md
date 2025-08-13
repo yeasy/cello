@@ -33,11 +33,11 @@ docker ps
 ```
 
 ## Conclustion
-That's it! You have successfully run a *Hyperledger Cello* agent on your computer.
+That's it! You have successfully run a *Hyperledger Cello* agent on your computer🎉.
 
 In the next lesson, we'll talk about how you can create an organization and its first administrator.
 
-See you then!
+See you then👋!
 
 ## P.S. The "Quickstart" Way
 Alternatively, you can run

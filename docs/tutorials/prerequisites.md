@@ -28,4 +28,4 @@ If the command runs successfully, switch into the project directory:
 cd cello
 ```
 
-That's it for this lesson. See you in the next one!
+That's it for this lesson. See you in the next one👋!
