@@ -28,6 +28,9 @@ Next, start the agent by running
 make agent
 ```
 
+!!! tip
+    By doing so, you deploy the agent with a pre-written docker compose file `bootup/docker-compose-files/docker-compose.agent.dev.yml` Nevertheless, You can actually deploy the agent however you like if you want to write your own docker compose file with your own configurations. It's all up to you!
+
 If nothing goes wrong, you should see a container named `cello-docker-agent` running on your computer by executing
 
 ```bash

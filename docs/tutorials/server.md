@@ -43,6 +43,9 @@ Finally, we can start the server by:
 make server
 ```
 
+!!! tip
+    By doing so, you deploy the server with a pre-written docker compose file `bootup/docker-compose-files/docker-compose.server.dev.yml`. Nevertheless, You can actually deploy the server however you like if you want to write your own docker compose file with your own configurations. It's all up to you!
+
 If nothing goes wrong, you should see 3 containers running on your computer by executing
 
 ```bash
