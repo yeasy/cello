@@ -1,4 +1,4 @@
-# Lesson 6: Channel and Chaincode
+# Lesson 6: Channel & Chaincode
 
 !!! bug
     Currently, this feature only works if the server is on the same host with agents i.e. **You can create channels only if all your *Hyperledger Cello* components aren't deployed across multiple hosts**.

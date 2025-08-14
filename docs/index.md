@@ -28,7 +28,7 @@ Using Cello, blockchain developers can:
 
 ## [Getting Started](setup/server.md)
 
-**For beginners, it is highly recommended to read the [Setup](setup/server.md) first**.
+**For beginners, it is highly recommended to read the [Tutorials](tutorials/introduction.md) first**.
 
 ## Operation Guidelines
 * [Operator operations in dashboard](operations/dashboard/operator.md)
