@@ -26,16 +26,16 @@ Using Cello, blockchain developers can:
 
 ![Typical Scenario](images/scenario.png)
 
-## [Getting Started](setup/server.md)
+## Getting Started
 
-**For beginners, it is highly recommended to read the [Tutorials](tutorials/introduction.md) first**.
+**For beginners, it is highly recommended to read the [*Tutorials*](tutorials/introduction.md) first**.
 
 ## Operation Guidelines
 * [Operator operations in dashboard](operations/dashboard/operator.md)
 * [Admin operations in dashboard](operations/dashboard/admin.md)
 * [User operations in dashboard](operations/dashboard/user.md)
 
-## [Contribute to the Project](contributing.md)
+## Contribute to the Project
 * [How to Contribute](contributing.md)
 * [Code Style Guide](https://black.readthedocs.io/en/stable/the_black_code_style.html)
 
