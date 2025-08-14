@@ -77,3 +77,6 @@ Moreover, you also managed to deploy some *Hyperledger Fabric* running nodes!
 In the next lesson, we'll talk about how you can create a *channel* with them.
 
 See you then👋!
+
+!!! note
+    **Network* is not *Blockchain**, and there is no block on it. *Network* is just an abstract idea about what connects between organization *nodes*.
